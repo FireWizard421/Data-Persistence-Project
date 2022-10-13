@@ -13,8 +13,14 @@ public class MenuHandler : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void StartNew()
     {
-        
+        SceneManager.LoadScene(1);
     }
+
+    public void Exit()
+    {
+
+    }
+
 }
