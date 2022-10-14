@@ -10,11 +10,13 @@ public class MainHandler : MonoBehaviour
 
     public string playerName;
     public int highScore;
+    public string currentPlayerName;
     public void Awake()
     {
         if(Instance != null)
         {
             Destroy(gameObject);
+            return;
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);

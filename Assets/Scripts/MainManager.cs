@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -12,11 +13,14 @@ public class MainManager : MonoBehaviour
 
     public Text ScoreText;
     public GameObject GameOverText;
+    public Text HighScoreText;
     
     private bool m_Started = false;
     private int m_Points;
     
     private bool m_GameOver = false;
+
+    private string currentPlayerName = MainHandler.Instance.currentPlayerName;
 
     
     // Start is called before the first frame update
@@ -24,6 +28,8 @@ public class MainManager : MonoBehaviour
     {
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
+
+        UpdateHighScore();
         
         int[] pointCountArray = new [] {1,1,2,2,5,5};
         for (int i = 0; i < LineCount; ++i)
@@ -60,6 +66,7 @@ public class MainManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+
     }
 
     void AddPoint(int point)
@@ -72,5 +79,22 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        if (m_Points > MainHandler.Instance.highScore)
+        {
+            MainHandler.Instance.highScore = m_Points;
+            MainHandler.Instance.playerName = currentPlayerName;
+            UpdateHighScore();
+        }
+    }
+
+    public void GoBack()
+    {
+        SceneManager.LoadScene(0);
+        MainHandler.Instance.SaveScore();
+    }
+
+    public void UpdateHighScore()
+    {
+        HighScoreText.text = "Best Score: " + MainHandler.Instance.playerName + " : " + MainHandler.Instance.highScore;
     }
 }
